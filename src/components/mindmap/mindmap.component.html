@@ -1,0 +1,18 @@
+<div class="w-full flex flex-col items-center">
+  <h1 class="text-4xl font-bold mb-8 font-['Lexend_Deca']">Mindmap Visualization</h1>
+  
+  @if (isLoading()) {
+    <div class="w-full max-w-4xl p-6 rounded-2xl bg-[#ffc4c4] dark:bg-[#837ab6] border border-white/20 shadow-lg space-y-4">
+      <app-skeleton-loader height="2rem" width="50%" className="mx-auto"></app-skeleton-loader>
+      <app-skeleton-loader height="20rem" width="100%"></app-skeleton-loader>
+    </div>
+  } @else if (error()) {
+    <p class="text-red-500">{{ error() }}</p>
+  } @else if (mermaidData(); as data) {
+    <div class="w-full p-4 rounded-2xl bg-[#ffc4c4]/50 dark:bg-[#837ab6]/50 border border-white/20 shadow-lg overflow-auto">
+      <app-mindmap-graph [graphDefinition]="data"></app-mindmap-graph>
+    </div>
+  } @else {
+    <p>No mindmap data available.</p>
+  }
+</div>

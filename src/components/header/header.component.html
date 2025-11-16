@@ -1,0 +1,16 @@
+<header class="sticky top-0 z-50 p-4">
+  <nav class="container mx-auto flex items-center justify-between rounded-xl border border-white/20 bg-white/10 p-4 shadow-lg backdrop-blur-xl">
+    <a routerLink="/" class="text-2xl font-bold tracking-tighter bg-gradient-to-r from-[#ee6983] to-[#850e35] dark:from-[#f6a5c0] dark:to-[#cc8db3] bg-clip-text text-transparent animated-gradient-text">
+      🌙 LunaNotes
+    </a>
+    <div class="hidden md:flex items-center space-x-4 text-lg">
+      <a routerLink="/dashboard" routerLinkActive="font-bold" class="hover:text-[#ee6983] dark:hover:text-[#f6a5c0] transition-colors">Dashboard</a>
+      <a routerLink="/analytics" routerLinkActive="font-bold" class="hover:text-[#ee6983] dark:hover:text-[#f6a5c0] transition-colors">Analytics</a>
+      <a routerLink="/history" routerLinkActive="font-bold" class="hover:text-[#ee6983] dark:hover:text-[#f6a5c0] transition-colors">History</a>
+    </div>
+    <div class="flex items-center space-x-2">
+      <app-auth></app-auth>
+      <app-theme-toggle></app-theme-toggle>
+    </div>
+  </nav>
+</header>

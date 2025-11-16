@@ -1,0 +1,39 @@
+<div class="flex items-center space-x-2">
+  @if (firebaseService.user(); as user) {
+    <!-- Logged-in State -->
+    <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/5 dark:bg-white/5 text-sm">
+      <span>🔥</span>
+      <span class="font-bold">{{ userStatsService.stats()?.streak ?? 0 }}</span>
+    </div>
+    <button (click)="toggleTimer()" title="Productivity Timer" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+      <span>⏱️</span>
+    </button>
+    <div class="relative group">
+      <button class="flex items-center">
+        @if (user.photoURL) {
+          <img [src]="user.photoURL" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-white/50" />
+        } @else {
+          <div class="w-10 h-10 rounded-full border-2 border-white/50 bg-[#ee6983] flex items-center justify-center font-bold text-white">
+            {{ user.displayName?.[0] ?? user.email?.[0] }}
+          </div>
+        }
+      </button>
+      <div class="absolute right-0 mt-2 w-48 bg-[#fff5e4] dark:bg-[#481535] rounded-lg shadow-lg border border-white/20 py-1
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto z-10">
+        <div class="px-4 py-2 text-sm text-center">
+          <p class="font-semibold truncate">{{ user.displayName }}</p>
+          <p class="text-xs opacity-70 truncate">{{ user.email }}</p>
+        </div>
+        <div class="border-t border-black/10 dark:border-white/10 my-1"></div>
+        <button (click)="signOut()" class="w-full text-left px-4 py-2 text-sm hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  } @else {
+    <!-- Logged-out State -->
+    <button (click)="signIn()" class="px-4 py-2 rounded-lg font-semibold bg-gradient-to-r from-[#ee6983] to-[#850e35] text-white dark:bg-gradient-to-r dark:from-[#f6a5c0] dark:to-[#cc8db3] dark:text-[#481535] hover:scale-105 transform transition-transform">
+      Sign In
+    </button>
+  }
+</div>

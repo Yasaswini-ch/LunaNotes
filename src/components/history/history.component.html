@@ -1,0 +1,58 @@
+<div class="animate-fade-in">
+  <h1 class="text-4xl font-bold font-display mb-8 text-center">Your Saved Notes</h1>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center h-64">
+      <div class="w-12 h-12 border-4 border-[#ee6983] dark:border-[#f6a5c0] border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  } @else if (error()) {
+    <p class="text-center text-red-500">{{ error() }}</p>
+  } @else if (history().length === 0) {
+    <div class="text-center text-[#850e35]/80 dark:text-[#f7c2ea]/80 py-16">
+      <span class="text-6xl">📚</span>
+      <p class="text-xl mt-4">You haven't saved any notes yet.</p>
+      <p>Process some notes and click "Save" to see them here.</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (note of history(); track note.noteId) {
+        <div class="history-card">
+          <p class="font-semibold text-lg line-clamp-3">{{ note.summary }}</p>
+          <p class="text-sm text-[#850e35]/70 dark:text-[#f7c2ea]/70 mt-2">
+            Saved on {{ formatDate(note.createdAt) }}
+          </p>
+          <button
+            (click)="viewNote(note.noteId)"
+            [disabled]="loadingNoteId() === note.noteId"
+            class="w-full mt-4 px-4 py-2 rounded-lg font-semibold border-2 border-[#ee6983] dark:border-[#f6a5c0] hover:bg-[#ee6983]/20 dark:hover:bg-[#f6a5c0]/20 transition-colors disabled:opacity-50"
+          >
+            @if (loadingNoteId() === note.noteId) {
+              <span>Loading...</span>
+            } @else {
+              <span>View Note</span>
+            }
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<style>
+.history-card {
+  @apply p-6 rounded-2xl bg-[#ffc4c4]/60 dark:bg-[#837ab6]/60 border border-white/20 shadow-lg backdrop-blur-xl flex flex-col justify-between transition-transform hover:scale-105;
+}
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>

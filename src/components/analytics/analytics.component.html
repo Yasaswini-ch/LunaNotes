@@ -1,0 +1,81 @@
+<div class="animate-fade-in">
+  <h1 class="text-4xl font-bold mb-8 text-center font-['Lexend_Deca']">Study Analytics</h1>
+
+  @if (isLoading()) {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="card h-80"><app-skeleton-loader height="100%"></app-skeleton-loader></div>
+      <div class="card h-80"><app-skeleton-loader height="100%"></app-skeleton-loader></div>
+      <div class="card h-80 lg:col-span-2"><app-skeleton-loader height="100%"></app-skeleton-loader></div>
+    </div>
+  } @else if (error()) {
+    <p class="text-center text-red-500 py-16">{{ error() }}</p>
+  } @else if (analyticsData(); as data) {
+    <!-- Key Metrics -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4 font-['Lexend_Deca'] text-center">Key Metrics</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div class="stat-card">
+          <p class="text-4xl font-bold">{{ avgNotesPerWeek() }}</p>
+          <p class="opacity-80">Avg. Notes / Week</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-4xl font-bold truncate" [title]="mostFrequentTopic().label">{{ mostFrequentTopic().label }}</p>
+          <p class="opacity-80">Most Frequent Topic</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-4xl font-bold">{{ busiestWeek().value }} notes</p>
+          <p class="opacity-80">Busiest Week ({{ busiestWeek().label }})</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Notes Per Week -->
+      <div class="card">
+        <h2 class="card-title">Notes Processed Per Week</h2>
+        <div class="h-80">
+          <app-line-chart [data]="data.notesPerWeek"></app-line-chart>
+        </div>
+      </div>
+      
+      <!-- Average Session Duration -->
+      <div class="card">
+        <h2 class="card-title">Average Session Duration</h2>
+        <div class="h-80">
+          <app-pie-chart [data]="data.avgSessionDuration"></app-pie-chart>
+        </div>
+      </div>
+      
+      <!-- Topic Breakdown -->
+      <div class="card lg:col-span-2">
+        <h2 class="card-title">Most Frequent Study Topics</h2>
+        <div class="h-80">
+          <app-bar-chart [data]="data.topicBreakdown"></app-bar-chart>
+        </div>
+      </div>
+
+    </div>
+  } @else {
+    <p class="text-center py-16">No analytics data available.</p>
+  }
+</div>
+
+<style>
+.card {
+  @apply p-6 rounded-2xl bg-[#ffc4c4]/60 dark:bg-[#837ab6]/60 border border-white/20 shadow-lg backdrop-blur-xl;
+}
+.stat-card {
+  @apply p-6 rounded-2xl bg-[#ffc4c4]/60 dark:bg-[#837ab6]/60 border border-white/20 shadow-lg backdrop-blur-xl;
+}
+.card-title {
+  @apply text-2xl font-bold mb-4 font-['Lexend_Deca'] text-[#850e35] dark:text-[#f7c2ea];
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>

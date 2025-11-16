@@ -1,0 +1,59 @@
+<div #chartContainer class="w-full h-full relative"></div>
+
+<style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .bar {
+    transition: opacity 0.2s;
+  }
+
+  .bar-hover {
+    opacity: 0.8;
+  }
+  
+  .tooltip {
+    position: fixed;
+    visibility: hidden;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Light Theme */
+  :host-context(body:not(.dark)) .axis path,
+  :host-context(body:not(.dark)) .axis line {
+    stroke: #850e35;
+  }
+  :host-context(body:not(.dark)) .axis text {
+    fill: #850e35;
+  }
+  :host-context(body:not(.dark)) .bar {
+    fill: #ee6983;
+  }
+  :host-context(body:not(.dark)) .tooltip {
+    background-color: #850e35;
+    color: #fff5e4;
+  }
+
+  /* Dark Theme */
+  :host-context(body.dark) .axis path,
+  :host-context(body.dark) .axis line {
+    stroke: #f6a5c0;
+  }
+  :host-context(body.dark) .axis text {
+    fill: #f6a5c0;
+  }
+  :host-context(body.dark) .bar {
+    fill: #cc8db3;
+  }
+  :host-context(body.dark) .tooltip {
+    background-color: #f6a5c0;
+    color: #481535;
+  }
+</style>

@@ -1,0 +1,60 @@
+@if (notes()) {
+  <div class="max-w-3xl mx-auto flex flex-col h-[75vh]">
+    <h1 class="text-4xl font-bold mb-4 text-center font-['Lexend_Deca']">Chat with Your Notes</h1>
+    
+    <!-- Chat messages -->
+    <div class="flex-grow p-4 overflow-y-auto rounded-2xl bg-white/20 dark:bg-black/20 border border-white/20 backdrop-blur-xl">
+      <div class="flex flex-col gap-4">
+        @for (message of chatHistory(); track $index) {
+          <div class="chat-message" [class.user]="message.sender === 'user'" [class.ai]="message.sender === 'ai'">
+            <p>{{ message.text }}</p>
+          </div>
+        }
+        @if (isLoading()) {
+          <div class="chat-message ai">
+            <app-skeleton-loader height="1rem" width="3rem"></app-skeleton-loader>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <!-- Message input -->
+    <div class="mt-4 flex gap-2">
+      <input 
+        type="text"
+        [(ngModel)]="userInput"
+        (keyup.enter)="sendMessage()"
+        placeholder="Ask a question..."
+        class="flex-grow p-3 rounded-full bg-white/30 dark:bg-black/20 border border-[#ee6983]/30 dark:border-[#f6a5c0]/30 focus:ring-2 focus:ring-[#ee6983] dark:focus:ring-[#f6a5c0] focus:outline-none backdrop-blur-md transition placeholder:text-[#850e35]/50 dark:placeholder:text-[#f7c2ea]/50"
+        [disabled]="isLoading()"
+      />
+      <button 
+        (click)="sendMessage()" 
+        [disabled]="isLoading() || !userInput().trim()"
+        class="px-6 py-3 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#ee6983] to-[#850e35] dark:bg-gradient-to-r dark:from-[#f6a5c0] dark:to-[#cc8db3] dark:text-[#481535]
+               disabled:opacity-50 disabled:cursor-not-allowed">
+        Send
+      </button>
+    </div>
+  </div>
+} @else {
+  <div class="text-center py-16">
+    <h2 class="text-2xl font-bold">No notes available to chat with.</h2>
+    <p class="mt-2">Process some notes on the home page first.</p>
+    <a routerLink="/" class="mt-4 inline-block px-6 py-2 rounded-lg font-semibold bg-[#ee6983] text-white dark:bg-[#f6a5c0] dark:text-[#481535]">
+      Go Home
+    </a>
+  </div>
+}
+
+<style>
+  .chat-message {
+    @apply p-3 rounded-2xl max-w-[80%];
+  }
+  .chat-message.ai {
+    @apply bg-[#ffc4c4] dark:bg-[#837ab6] self-start rounded-bl-none;
+  }
+  .chat-message.user {
+    @apply bg-[#ee6983] text-white dark:bg-[#f6a5c0] dark:text-[#481535] self-end rounded-br-none;
+  }
+</style>

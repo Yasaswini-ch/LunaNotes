@@ -1,0 +1,176 @@
+<div class="flex flex-col items-center text-center animate-fade-in">
+  <!-- Draft Loader -->
+  @if (draftService.hasDraft()) {
+    <div class="w-full max-w-3xl mb-6 p-4 rounded-lg bg-[#ee6983]/20 dark:bg-[#f6a5c0]/20 border border-[#ee6983]/30 dark:border-[#f6a5c0]/30 flex items-center justify-between animate-fade-in">
+      <p class="font-semibold">You have a saved draft.</p>
+      <button (click)="loadDraft()" class="px-4 py-2 rounded-lg font-semibold bg-[#ee6983] text-white dark:bg-[#f6a5c0] dark:text-[#481535] hover:scale-105 transform transition-transform">
+        Load Draft
+      </button>
+    </div>
+  }
+
+  <!-- Hero Section -->
+  <h1 class="text-4xl md:text-6xl font-bold mb-4 font-['Lexend_Deca'] animated-gradient-text bg-gradient-to-r from-[#ee6983] to-[#850e35] dark:from-[#f6a5c0] dark:to-[#cc8db3] bg-clip-text text-transparent">
+    Turn Messy Notes into Magic
+  </h1>
+  <p class="text-lg md:text-xl mb-8 max-w-2xl text-[#850e35]/80 dark:text-[#f7c2ea]/80">
+    Paste any text — lecture notes, articles, or study guides — and LunaNotes will instantly structure it for you.
+  </p>
+
+  <!-- Input Section -->
+  <div class="w-full max-w-3xl mb-16 p-6 rounded-2xl bg-[#ffc4c4]/50 dark:bg-[#837ab6]/50 border border-white/20 shadow-lg backdrop-blur-xl">
+    @if (isLoading()) {
+      <div class="w-full">
+        <h3 class="text-xl font-semibold mb-4 text-left">Processing your genius ideas...</h3>
+        <app-progress-bar [progress]="progress()"></app-progress-bar>
+        <p class="text-sm mt-2 text-center">{{ loadingMessage() }}</p>
+      </div>
+    } @else {
+      <div 
+        class="relative border-2 border-dashed border-[#ee6983]/50 dark:border-[#f6a5c0]/50 rounded-xl p-4 transition-colors"
+        [class.bg-white/40]="isDragging()"
+        [class.dark:bg-black/30]="isDragging()"
+        (dragover)="onDragOver($event)" 
+        (dragleave)="onDragLeave($event)" 
+        (drop)="onDrop($event)">
+        
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none" [class.hidden]="userInput().length > 0 || isParsingFile() || processedFileName()" (click)="fileInput.click()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-2 text-[#ee6983]/70 dark:text-[#f6a5c0]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p class="font-semibold">Drop a file or <button type="button" (click)="fileInput.click(); $event.stopPropagation();" class="text-[#ee6983] dark:text-[#f6a5c0] font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">browse</button></p>
+            <p class="text-xs opacity-70 mt-1">Supports: PDF, DOCX, TXT, MD</p>
+        </div>
+        
+        @if (isParsingFile()) {
+          <div class="absolute inset-0 flex flex-col items-center justify-center bg-white/50 dark:bg-black/50 backdrop-blur-sm rounded-xl z-20">
+            <div class="w-8 h-8 border-4 border-[#ee6983] dark:border-[#f6a5c0] border-t-transparent rounded-full animate-spin"></div>
+            <p class="font-semibold mt-4">Extracting text from your file...</p>
+          </div>
+        }
+
+        <textarea
+          #textarea
+          [(ngModel)]="userInput"
+          placeholder="Paste your notes here, or drop a file..."
+          class="w-full h-64 p-2 bg-transparent focus:outline-none transition placeholder:text-[#850e35]/50 dark:placeholder:text-[#f7c2ea]/50 text-base resize-none relative z-10"
+          [disabled]="isLoading() || isParsingFile() || isRecording()"
+        ></textarea>
+        <input type="file" #fileInput hidden (change)="onFileSelect($event)" accept=".pdf,.docx,.txt,.md">
+
+        <!-- NEW: Voice recording button -->
+        <button 
+          (click)="toggleRecording()"
+          [disabled]="isParsingFile()"
+          type="button"
+          title="{{ isRecording() ? 'Stop Recording' : 'Record Audio' }}"
+          class="absolute bottom-4 right-4 z-20 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+          [class]="isRecording() ? 'recording-active' : 'recording-idle'"
+        >
+          @if (isRecording()) {
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 16 16"><path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/></svg>
+          } @else {
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 0 1-14 0m7 8v3m-4-6a4 4 0 1 1 8 0v3a4 4 0 1 1-8 0v-3z"></path></svg>
+          }
+        </button>
+      </div>
+
+      @if (processedFileName()) {
+        <div class="mt-4 flex items-center justify-center bg-white/30 dark:bg-black/20 px-3 py-1.5 rounded-full text-sm font-medium border border-white/20">
+          <span class="truncate" [title]="processedFileName()">{{ processedFileName() }}</span>
+          <button (click)="clearFile()" class="ml-2 text-xl leading-none hover:text-[#ee6983] dark:hover:text-[#f6a5c0] transition-colors focus:outline-none">&times;</button>
+        </div>
+      }
+
+      <div class="mt-6">
+        <button 
+          (click)="processText()" 
+          [disabled]="isLoading() || !userInput().trim() || isParsingFile() || isRecording()"
+          class="px-12 py-4 rounded-full font-bold text-xl text-white bg-gradient-to-r from-[#ee6983] to-[#850e35] dark:bg-gradient-to-r dark:from-[#f6a5c0] dark:to-[#cc8db3] dark:text-[#481535]
+                 hover:scale-105 transform transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed
+                 shadow-[0_0_20px_-5px_rgba(238,105,131,0.6)] dark:shadow-[0_0_20px_-5px_rgba(246,165,192,0.6)]">
+          Process Notes
+        </button>
+      </div>
+
+    }
+     @if (error()) {
+      <p class="mt-4 text-red-500">{{ error() }}</p>
+    }
+  </div>
+
+  <!-- How It Works -->
+  <div class="w-full max-w-4xl mb-16">
+    <h2 class="section-title">How It Works</h2>
+    <div class="grid md:grid-cols-3 gap-8 text-center">
+      <div class="feature-card">
+        <span class="text-5xl">✨</span>
+        <h3 class="font-bold text-xl mt-2">1. Paste or Drop</h3>
+        <p>Drop a file or paste any text.</p>
+      </div>
+      <div class="feature-card">
+        <span class="text-5xl">🧠</span>
+        <h3 class="font-bold text-xl mt-2">2. AI Analysis</h3>
+        <p>Our AI cleans and structures it.</p>
+      </div>
+      <div class="feature-card">
+        <span class="text-5xl">💖</span>
+        <h3 class="font-bold text-xl mt-2">3. Learn Better</h3>
+        <p>Enjoy organized, clear notes.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Features Section -->
+  <div class="w-full max-w-4xl">
+    <h2 class="section-title">Features</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+      <div class="feature-card p-6">
+        <h3 class="font-bold text-xl">📝 Summaries & Key Points</h3>
+        <p>Get the gist of your notes instantly.</p>
+      </div>
+      <div class="feature-card p-6">
+        <h3 class="font-bold text-xl">🗺️ Mindmaps</h3>
+        <p>Visualize the connections in your notes.</p>
+      </div>
+      <div class="feature-card p-6">
+        <h3 class="font-bold text-xl">💬 AI Chat</h3>
+        <p>Ask questions about your material.</p>
+      </div>
+       <div class="feature-card p-6">
+        <h3 class="font-bold text-xl">🔥 Study Streaks</h3>
+        <p>Stay motivated by tracking your progress.</p>
+      </div>
+       <div class="feature-card p-6">
+        <h3 class="font-bold text-xl">⏱️ Productivity Timer</h3>
+        <p>Use Pomodoro to focus your study.</p>
+      </div>
+       <div class="feature-card p-6">
+        <h3 class="font-bold text-xl">📈 Dashboard</h3>
+        <p>Get insights on your study habits.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.section-title {
+  @apply text-3xl font-bold mb-8 font-['Lexend_Deca'];
+}
+.feature-card {
+  @apply p-4 rounded-2xl bg-[#ffc4c4]/30 dark:bg-[#837ab6]/30 border border-white/10;
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.recording-idle {
+  @apply bg-[#ee6983] text-white dark:bg-[#f6a5c0] dark:text-[#481535];
+}
+.recording-active {
+  @apply bg-red-500 text-white animate-pulse;
+}
+</style>

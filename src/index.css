@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-light-bg dark:bg-dark-bg text-light-heading dark:text-dark-glow;
+    @apply transition-colors duration-300;
+  }
+}
+
+.glass-card {
+  @apply bg-white/30 dark:bg-black/20 backdrop-blur-lg border border-white/20 rounded-2xl;
+}

@@ -1,0 +1,35 @@
+<div #chartContainer class="w-full h-full"></div>
+
+<style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pie-slice {
+    stroke-width: 2px;
+  }
+  
+  .pie-label {
+    text-anchor: middle;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* Light Theme */
+  :host-context(body:not(.dark)) .pie-slice {
+    stroke: #fff5e4;
+  }
+  :host-context(body:not(.dark)) .pie-label {
+    fill: #481535;
+  }
+
+  /* Dark Theme */
+  :host-context(body.dark) .pie-slice {
+    stroke: #481535;
+  }
+  :host-context(body.dark) .pie-label {
+    fill: #f7c2ea;
+  }
+</style>

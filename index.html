@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>🌙 LunaNotes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Set a modern, clean font as the default */
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Add smooth transitions for theme changes */
+    body, .card {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    .backdrop-blur-xl {
+      transition: backdrop-filter 0.3s ease;
+    }
+    .animated-gradient-text {
+      background-size: 200% auto;
+      animation: gradient-animation 3s ease-in-out infinite;
+    }
+    @keyframes gradient-animation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://aistudiocdn.com/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://aistudiocdn.com/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://aistudiocdn.com/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://aistudiocdn.com/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://aistudiocdn.com/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@angular/compiler": "https://next.esm.sh/@angular/compiler@^20.3.12?external=rxjs",
+    "@angular/platform-browser": "https://next.esm.sh/@angular/platform-browser@^20.3.12?external=rxjs",
+    "@angular/common": "https://next.esm.sh/@angular/common@^20.3.12?external=rxjs",
+    "@angular/common/http": "https://next.esm.sh/@angular/common@^20.3.12/http?external=rxjs",
+    "@angular/core": "https://next.esm.sh/@angular/core@^20.3.12?external=rxjs",
+    "@angular/forms": "https://next.esm.sh/@angular/forms@^20.3.12?external=rxjs",
+    "@google/genai": "https://next.esm.sh/@google/genai@^1.29.1?external=rxjs",
+    "@angular/router": "https://next.esm.sh/@angular/router@^20.3.12?external=rxjs",
+    "d3": "https://cdn.jsdelivr.net/npm/d3@7/+esm",
+    "react/jsx-runtime": "https://next.esm.sh/react@^19.2.0/jsx-runtime?external=rxjs",
+    "react": "https://next.esm.sh/react@^19.2.0?external=rxjs",
+    "react-dom/client": "https://next.esm.sh/react-dom@^19.2.0/client?external=rxjs",
+    "react-router-dom": "https://next.esm.sh/react-router-dom@^7.9.6?external=rxjs",
+    "firebase/functions": "https://next.esm.sh/firebase@^12.6.0/functions?external=rxjs",
+    "firebase/storage": "https://next.esm.sh/firebase@^12.6.0/storage?external=rxjs",
+    "firebase/firestore": "https://next.esm.sh/firebase@^12.6.0/firestore?external=rxjs",
+    "firebase/auth": "https://next.esm.sh/firebase@^12.6.0/auth?external=rxjs",
+    "firebase/app": "https://next.esm.sh/firebase@^12.6.0/app?external=rxjs",
+    "lucide-react": "https://next.esm.sh/lucide-react@^0.553.0?external=rxjs",
+    "reactflow/dist/style.css": "https://next.esm.sh/reactflow@^11.11.4/dist/style.css?external=rxjs",
+    "reactflow": "https://next.esm.sh/reactflow@^11.11.4?external=rxjs"
+  }
+}
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid.js for manual rendering calls.
+    // This ensures the library is ready before Angular components try to use it.
+    mermaid.initialize({ startOnLoad: false });
+  </script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-[#fff5e4] dark:bg-[#481535]">
+  <app-root></app-root>
+</body>
+</html>

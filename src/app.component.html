@@ -1,0 +1,16 @@
+<div class="min-h-screen text-[#850e35] dark:text-[#f7c2ea] bg-[#fff5e4] dark:bg-[#481535]">
+  <app-header></app-header>
+  <main class="container mx-auto px-4 py-8">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+@if (onboardingService.showOnboarding()) {
+  <app-onboarding></app-onboarding>
+}
+
+@if (uiService.isTimerVisible()) {
+  <app-timer></app-timer>
+}
+
+<app-toast></app-toast>

@@ -1,0 +1,7 @@
+{
+  "name": "🌙 LunaNotes",
+  "description": "An AI-powered learning assistant that transforms raw notes into structured, digestible formats, complete with summaries, key points, definitions, mindmaps, and an interactive chat.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

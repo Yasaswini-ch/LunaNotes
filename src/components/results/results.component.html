@@ -1,0 +1,135 @@
+@if (notes(); as currentNotes) {
+  <div class="flex flex-col gap-8">
+    
+    <div class="flex justify-between items-center">
+      <h1 class="text-4xl font-bold font-['Lexend_Deca']">Your Structured Notes</h1>
+      <div class="flex gap-4">
+        <button (click)="saveAsDraft()" class="px-4 py-2 rounded-lg font-semibold border-2 border-[#ee6983]/60 dark:border-[#f6a5c0]/60 text-[#850e35]/80 dark:text-[#f7c2ea]/80 hover:bg-[#ee6983]/20 dark:hover:bg-[#f6a5c0]/20 transition-colors">
+          Save as Draft
+        </button>
+        <button (click)="saveNotes()" class="px-4 py-2 rounded-lg font-semibold border-2 border-[#ee6983] dark:border-[#f6a5c0] hover:bg-[#ee6983]/20 dark:hover:bg-[#f6a5c0]/20 transition-colors">
+          Save Notes
+        </button>
+        <button (click)="downloadJson()" class="px-4 py-2 rounded-lg font-semibold border-2 border-[#ee6983] dark:border-[#f6a5c0] hover:bg-[#ee6983]/20 dark:hover:bg-[#f6a5c0]/20 transition-colors">
+          Download JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <button (click)="navigateToMindmap()" class="card-action group">
+        <span class="text-4xl">🧠</span>
+        <div>
+          <h3 class="text-xl font-bold">Mindmap View</h3>
+          <p class="text-sm opacity-80">Visualize connections and ideas.</p>
+        </div>
+        <span class="ml-auto text-2xl group-hover:translate-x-2 transition-transform">→</span>
+      </button>
+      <button (click)="navigateToChat()" class="card-action group">
+        <span class="text-4xl">💬</span>
+        <div>
+          <h3 class="text-xl font-bold">Chat with Notes</h3>
+          <p class="text-sm opacity-80">Ask questions and get instant answers.</p>
+        </div>
+        <span class="ml-auto text-2xl group-hover:translate-x-2 transition-transform">→</span>
+      </button>
+    </div>
+
+    <!-- Summary Card -->
+    <div class="card">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="card-title !mb-0">Summary</h2>
+        <button (click)="copySummary()" title="Copy Summary" class="copy-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        </button>
+      </div>
+      <p>{{ currentNotes.summary }}</p>
+    </div>
+
+    <!-- Key Points & Definitions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="card">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="card-title !mb-0">Key Points</h2>
+           <button (click)="copyKeyPoints()" title="Copy Key Points" class="copy-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+        <ul class="list-disc list-inside space-y-2">
+          @for (point of currentNotes.keypoints; track point) {
+            <li>{{ point }}</li>
+          }
+        </ul>
+      </div>
+      <div class="card">
+         <div class="flex justify-between items-center mb-4">
+          <h2 class="card-title !mb-0">Definitions</h2>
+          <button (click)="copyDefinitions()" title="Copy Definitions" class="copy-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          @for (def of currentNotes.definitions; track def.term) {
+            <div>
+              <h3 class="font-bold">{{ def.term }}</h3>
+              <p>{{ def.definition }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    
+    <!-- Formulas -->
+    @if (currentNotes.formulas && currentNotes.formulas.length > 0) {
+      <div class="card">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="card-title !mb-0">Formulas</h2>
+          <button (click)="copyFormulas()" title="Copy Formulas" class="copy-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          @for (formula of currentNotes.formulas; track formula.formula) {
+            <div class="p-3 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between gap-4">
+              <div>
+                <p class="font-mono font-semibold">{{ formula.formula }}</p>
+                <p class="text-sm opacity-90">{{ formula.result }}</p>
+              </div>
+               <a [href]="getWolframUrl(formula.formula)" target="_blank" rel="noopener noreferrer" class="wolfram-btn" title="Solve with Wolfram|Alpha">
+                <img src="https://www.wolframalpha.com/_next/static/images/wolfram-alpha-logo-horiz-cs-2024-sm-172x22_alpha.svg" alt="Wolfram|Alpha" class="h-5">
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+} @else {
+  <div class="text-center py-16">
+    <h2 class="text-2xl font-bold">No notes processed yet.</h2>
+    <p class="mt-2">Go back to the homepage to get started.</p>
+    <a routerLink="/" class="mt-4 inline-block px-6 py-2 rounded-lg font-semibold bg-[#ee6983] text-white dark:bg-[#f6a5c0] dark:text-[#481535]">
+      Go Home
+    </a>
+  </div>
+}
+
+<style>
+  .card {
+    @apply p-6 rounded-2xl bg-[#ffc4c4] dark:bg-[#837ab6] border border-white/20 shadow-lg backdrop-blur-xl transition-transform duration-300 hover:scale-[1.02] dark:shadow-[0_0_20px_-5px_rgba(247,194,234,0.4)];
+  }
+  .card-title {
+    @apply text-2xl font-bold mb-4 font-['Lexend_Deca'] text-[#850e35] dark:text-[#f7c2ea];
+  }
+  .card-action {
+    @apply flex items-center gap-4 text-left p-6 rounded-2xl bg-white/30 dark:bg-black/20 border border-[#ee6983]/30 dark:border-[#f6a5c0]/30 hover:border-[#ee6983] dark:hover:border-[#f6a5c0] shadow-md backdrop-blur-md transition-all duration-300 hover:scale-105;
+  }
+  .copy-btn {
+    @apply p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-[#850e35]/80 dark:text-[#f7c2ea]/80;
+  }
+  .wolfram-btn {
+    @apply px-2 py-1 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex-shrink-0;
+  }
+</style>

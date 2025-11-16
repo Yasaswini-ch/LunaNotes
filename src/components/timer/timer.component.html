@@ -1,0 +1,39 @@
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex items-center justify-center animate-fade-in" (click)="close()">
+  <div class="w-full max-w-sm p-8 rounded-2xl bg-[#fff5e4] dark:bg-[#481535] border-2 border-[#ee6983] dark:border-[#f6a5c0] shadow-lg text-center relative" (click)="$event.stopPropagation()">
+    
+    <h2 class="text-2xl font-bold mb-4 font-['Lexend_Deca']">Productivity Timer</h2>
+    
+    <div class="my-6">
+        <p class="text-7xl font-mono font-bold tabular-nums tracking-tighter">
+            {{ minutes() | number:'2.0' }}:{{ seconds() | number:'2.0' }}
+        </p>
+        <p class="text-lg opacity-80">{{ sessionType() === 'work' ? 'Time to Focus!' : 'Take a Break!' }}</p>
+    </div>
+
+    <div class="flex items-center justify-center gap-4">
+        @if (!isActive()) {
+            <button (click)="startTimer()" class="timer-btn bg-[#ee6983] text-white dark:bg-[#f6a5c0] dark:text-[#481535]">Start</button>
+        } @else {
+            <button (click)="pauseTimer()" class="timer-btn bg-yellow-500 text-white">Pause</button>
+        }
+        <button (click)="resetTimer()" class="timer-btn">Reset</button>
+    </div>
+
+     <button (click)="close()" class="absolute top-3 right-3 w-8 h-8 rounded-full hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center transition-colors">
+        &times;
+    </button>
+  </div>
+</div>
+
+<style>
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.timer-btn {
+  @apply px-6 py-2 rounded-full font-semibold transition-transform hover:scale-105;
+}
+</style>

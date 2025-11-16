@@ -1,0 +1,67 @@
+<div class="animate-fade-in">
+  <h1 class="text-4xl font-bold mb-8 text-center font-['Lexend_Deca']">Your Study Dashboard</h1>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center h-64">
+       <div class="w-12 h-12 border-4 border-[#ee6983] dark:border-[#f6a5c0] border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  } @else if (error()) {
+    <p class="text-center text-red-500">{{ error() }}</p>
+  } @else if (stats(); as userStats) {
+    <!-- Stat Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="stat-card">
+        <div class="text-5xl">🔥</div>
+        <div>
+          <p class="text-4xl font-bold">{{ userStats.streak }}</p>
+          <p class="opacity-80">Day Streak</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="text-5xl">📝</div>
+        <div>
+          <p class="text-4xl font-bold">{{ userStats.totalNotes }}</p>
+          <p class="opacity-80">Total Notes Saved</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <h2 class="card-title">Recent Activity</h2>
+      @if (userStats.recentActivity && userStats.recentActivity.length > 0) {
+        <ul class="space-y-3">
+          @for (note of userStats.recentActivity; track note.noteId) {
+            <li class="flex items-center justify-between p-3 rounded-lg bg-black/5 dark:bg-white/5">
+              <span class="font-semibold truncate pr-4" [title]="note.summary">{{ note.summary }}</span>
+              <span class="text-sm opacity-70 flex-shrink-0">{{ formatDate(note.createdAt) }}</span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="text-center opacity-70 py-8">No notes saved in the last 7 days. Time to start a new session!</p>
+      }
+    </div>
+  } @else {
+     <p class="text-center">No stats available. Please sign in to view your dashboard.</p>
+  }
+</div>
+
+<style>
+.stat-card {
+  @apply flex items-center gap-6 p-6 rounded-2xl bg-[#ffc4c4]/60 dark:bg-[#837ab6]/60 border border-white/20 shadow-lg backdrop-blur-xl;
+}
+.card {
+  @apply p-6 rounded-2xl bg-[#ffc4c4]/60 dark:bg-[#837ab6]/60 border border-white/20 shadow-lg backdrop-blur-xl;
+}
+.card-title {
+  @apply text-2xl font-bold mb-4 font-['Lexend_Deca'] text-[#850e35] dark:text-[#f7c2ea];
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
