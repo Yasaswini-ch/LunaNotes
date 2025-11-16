@@ -22,9 +22,18 @@
 
 <br />
 
-<p align="center">
-  <img src="https://storage.googleapis.com/aistudio-app-serve-assets/gallery-assets/luna-notes-hero.png" alt="LunaNotes Application Screenshot" width="800"/>
-</p>
+## 📚 Documentation
+
+Comprehensive documentation, project story, and setup guides are available on **GitBook**:
+
+[![GitBook Documentation](https://img.shields.io/badge/📖%20Documentation-GitBook-3884FF?style=for-the-badge)](https://app.gitbook.com/o/xERUwW4pt5XnWvUb8OLQ/s/PbVbFhbxinwVVA17S8Is/)
+
+Visit the [**LunaNotes GitBook**](https://app.gitbook.com/o/xERUwW4pt5XnWvUb8OLQ/s/PbVbFhbxinwVVA17S8Is/) to explore:
+- Full project story & inspiration
+- Detailed feature breakdown
+- Architecture & tech stack
+- Getting started guide
+- Contributing guidelines
 
 ---
 
